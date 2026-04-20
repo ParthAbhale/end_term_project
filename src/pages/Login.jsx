@@ -42,7 +42,7 @@ export default function Login() {
           <div className="login-brand-icon">
             <TrendingUp size={30} />
           </div>
-          <h1>StockVision</h1>
+          <h1>StockAnalyzer</h1>
           <p>Smart stock analysis powered by data.<br />Track, analyze, and simulate investments.</p>
         </div>
 
