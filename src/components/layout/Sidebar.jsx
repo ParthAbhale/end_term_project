@@ -35,7 +35,7 @@ export default function Sidebar() {
         <div className="brand-icon">
           <TrendingUp size={22} />
         </div>
-        {sidebarOpen && <span className="brand-text">StockVision</span>}
+        {sidebarOpen && <span className="brand-text">Stock Analyser</span>}
       </div>
 
       {/* Navigation */}

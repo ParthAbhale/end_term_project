@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
-import { Menu, Bell, LogOut, User, ChevronDown } from 'lucide-react';
+import { Menu, Bell, LogOut, User, ChevronDown, Settings, Moon, Sun, Edit3, Image as ImageIcon, Camera } from 'lucide-react';
 import SearchBar from '../ui/SearchBar';
 import useStockStore from '../../store/useStockStore';
 import { useAuth } from '../../context/AuthContext';
@@ -16,10 +17,13 @@ const PAGE_TITLES = {
 
 export default function Navbar() {
   const location = useLocation();
-  const { setSidebarOpen, sidebarOpen } = useStockStore();
-  const { user, logout } = useAuth();
+  const { setSidebarOpen, sidebarOpen, darkMode, toggleDarkMode } = useStockStore();
+  const { user, logout, updateUserProfile } = useAuth();
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editPhotoUrl, setEditPhotoUrl] = useState('');
   const profileRef = useRef(null);
 
   const pathKey = Object.keys(PAGE_TITLES).find(
@@ -44,6 +48,22 @@ export default function Navbar() {
       await logout();
     } catch (err) {
       console.error('Logout failed:', err);
+    }
+  };
+
+  const handleEditProfile = () => {
+    setEditName(user?.displayName || '');
+    setEditPhotoUrl(user?.photoURL || '');
+    setShowEditModal(true);
+    setShowProfileMenu(false);
+  };
+
+  const handleSaveProfile = async () => {
+    try {
+      await updateUserProfile({ displayName: editName, photoURL: editPhotoUrl });
+      setShowEditModal(false);
+    } catch (err) {
+      console.error('Failed to update profile', err);
     }
   };
 
@@ -74,10 +94,7 @@ export default function Navbar() {
       </div>
 
       <div className="navbar-right">
-        <button className="navbar-icon-btn" title="Notifications">
-          <Bell size={19} />
-          <span className="notification-dot" />
-        </button>
+
 
         {/* User Profile */}
         <div className="navbar-profile" ref={profileRef}>
@@ -128,7 +145,22 @@ export default function Navbar() {
 
               <div className="profile-dropdown-divider" />
 
-              <button className="profile-dropdown-item" onClick={handleLogout}>
+              <button className="profile-dropdown-item" onClick={handleEditProfile}>
+                <Edit3 size={16} />
+                <span>Edit Profile</span>
+              </button>
+
+              <button className="profile-dropdown-item" onClick={() => {
+                toggleDarkMode();
+                setShowProfileMenu(false);
+              }}>
+                {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+                <span>{darkMode ? 'Light Mode' : 'Dark Mode'}</span>
+              </button>
+
+              <div className="profile-dropdown-divider" />
+
+              <button className="profile-dropdown-item logout" onClick={handleLogout}>
                 <LogOut size={16} />
                 <span>Sign Out</span>
               </button>
@@ -136,6 +168,67 @@ export default function Navbar() {
           )}
         </div>
       </div>
+
+      {/* Edit Profile Modal */}
+      {showEditModal && createPortal(
+        <div className="profile-modal-overlay animate-fadeIn">
+          <div className="profile-modal animate-scaleIn">
+            <div className="profile-modal-header">
+              <h3>Edit Profile</h3>
+              <p>Update your personal information</p>
+            </div>
+
+            <div className="profile-modal-body">
+              <div className="profile-avatar-preview-container">
+                <div className="profile-avatar-preview">
+                  {editPhotoUrl ? (
+                    <img src={editPhotoUrl} alt="Preview" onError={(e) => { e.target.style.display = 'none' }} />
+                  ) : (
+                    <div className="avatar-placeholder">
+                      <Camera size={24} />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Display Name</label>
+                <div className="input-with-icon">
+                  <User size={18} className="input-icon" />
+                  <input
+                    type="text"
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    placeholder="Enter new name"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Profile Image URL</label>
+                <div className="input-with-icon">
+                  <ImageIcon size={18} className="input-icon" />
+                  <input
+                    type="url"
+                    value={editPhotoUrl}
+                    onChange={(e) => setEditPhotoUrl(e.target.value)}
+                    placeholder="https://example.com/avatar.png"
+                  />
+                </div>
+                <span className="input-hint">Paste a link to your preferred avatar image.</span>
+              </div>
+            </div>
+
+            <div className="profile-modal-footer">
+              <button className="btn btn-outline" onClick={() => setShowEditModal(false)}>Cancel</button>
+              <button className="btn btn-primary profile-save-btn" onClick={handleSaveProfile}>
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </header>
   );
 }

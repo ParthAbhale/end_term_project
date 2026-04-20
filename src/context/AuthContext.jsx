@@ -3,6 +3,7 @@ import {
   onAuthStateChanged,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase';
 
@@ -38,6 +39,14 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const updateUserProfile = async ({ displayName, photoURL }) => {
+    if (auth.currentUser) {
+      await updateProfile(auth.currentUser, { displayName, photoURL });
+      // Force state update to reflect new name in UI
+      setUser({ ...auth.currentUser });
+    }
+  };
+
   if (loading) {
     return (
       <div className="auth-loading">
@@ -48,7 +57,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );
