@@ -1,0 +1,119 @@
+.watchlist {
+  max-width: 1400px;
+}
+
+.watchlist .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.wl-empty {
+  text-align: center;
+  padding: 60px 24px;
+  margin-top: 8px;
+}
+
+.wl-empty h3 {
+  margin: 16px 0 8px;
+  color: var(--text-primary);
+}
+
+.wl-empty p {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+.wl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.wl-card {
+  padding: 20px;
+  transition: var(--transition);
+}
+
+.wl-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.wl-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.wl-card-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 8px;
+}
+
+.wl-card-sector {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.wl-remove-btn {
+  padding: 6px;
+  border-radius: 8px;
+  color: var(--text-muted);
+  transition: var(--transition);
+}
+
+.wl-remove-btn:hover {
+  background: var(--red-bg);
+  color: var(--red);
+}
+
+.wl-card-chart {
+  margin: 8px -4px;
+}
+
+.wl-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.wl-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.wl-card-metrics {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-light);
+}
+
+.wl-card-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wl-card-metric span:first-child {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.wl-card-metric span:last-child {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}

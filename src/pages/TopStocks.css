@@ -1,0 +1,78 @@
+.top-stocks {
+  max-width: 1400px;
+}
+
+.ts-filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ts-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.88rem;
+  transition: var(--transition);
+}
+
+.ts-filter-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.ts-filter-btn.active {
+  background: var(--filter-color, var(--primary));
+  border-color: var(--filter-color, var(--primary));
+  color: white;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.ts-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+.ts-stock-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ts-ticker {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--primary);
+}
+
+.ts-name {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.ts-row-selected {
+  background: var(--primary-lighter) !important;
+}
+
+@media (max-width: 900px) {
+  .data-table th:nth-child(5),
+  .data-table td:nth-child(5),
+  .data-table th:nth-child(6),
+  .data-table td:nth-child(6) {
+    display: none;
+  }
+}
